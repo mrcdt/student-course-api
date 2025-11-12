@@ -7,14 +7,14 @@ describe('Student-Course API integration', () => {
     require('../../src/services/storage').seed();
   });
 
-  test('GET /students should return seeded students', async () => {
+  test('GET /students doit renvoyer les étudiants', async () => {
     const res = await request(app).get('/students');
     expect(res.statusCode).toBe(200);
     expect(res.body.students.length).toBe(3);
     expect(res.body.students[0].name).toBe('Alice');
   });
 
-  test('POST /students should create a new student', async () => {
+  test('POST /students peut créer un nouvel étudient', async () => {
     const res = await request(app).post('/students').send({
       name: 'David',
       email: 'david@example.com',
@@ -23,7 +23,7 @@ describe('Student-Course API integration', () => {
     expect(res.body.name).toBe('David');
   });
 
-  test('POST /students should not allow duplicate email', async () => {
+  test(`POST /students peut pas autoriser la duplication d'email`, async () => {
     const res = await request(app).post('/students').send({
       name: 'Eve',
       email: 'alice@example.com',
@@ -31,7 +31,7 @@ describe('Student-Course API integration', () => {
     expect(res.statusCode).toBe(400);
   });
 
-  test('UPDATE /students/:id should update a student', async () => {
+  test('UPDATE /students/:id peut mettre à jour un étudiant', async () => {
     const res1 = await request(app).get('/students/1');
     expect(res1.statusCode).toBe(200);
     expect(res1.body.student).toHaveProperty('name');
@@ -47,22 +47,22 @@ describe('Student-Course API integration', () => {
     expect(res.body.email).toBe('julie@example.com');
   });
 
-  test('DELETE /students/:id should delete a student', async () => {
+  test('DELETE /students/:id peut supprimer un étudiant', async () => {
     const students = await request(app).get('/students');
     const studentId = students.body.students[0].id;
     await request(app).post(`/students/${studentId}`);
     const res = await request(app).delete(`/students/${studentId}`);
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(204);
   });
 
-  test('DELETE /students/:id should return 404 if student not found', async () => {
+  test('DELETE /students/:id peut pas supprimer un étdiant inexistant', async () => {
     const res = await request(app).delete('/students/999');
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe('Student not found');
   });
 
   //tests courses
-  test('GET /courses/:id should return course and its students', async () => {
+  test('GET /courses/:id peut retourner une course et ses étudiants', async () => {
     const res = await request(app).get('/courses/1');
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('course');
@@ -72,7 +72,7 @@ describe('Student-Course API integration', () => {
 
     expect(Array.isArray(res.body.students)).toBe(true);
     const res1 = await request(app).get('/students');
-    expect(res1.body.students.length).toBe(2);
+    expect(res1.body.students.length).toBe(3);
     expect(res1.body.students[0].name).toBe('Alice');
     expect(res1.body.students[1].name).toBe('Bob');
   });
@@ -83,7 +83,7 @@ describe('Student-Course API integration', () => {
     expect(res.body).toHaveProperty('error', 'Course not found');
   });
 
-  test('POST /courses should create a new course', async () => {
+  test('POST /courses peut créer une nouvelle course', async () => {
     const res = await request(app).post('/courses').send({
       title: 'fffff',
       teacher: 'Louis',
@@ -93,22 +93,22 @@ describe('Student-Course API integration', () => {
     expect(res.body.title).toBe('fffff');
   });
 
-  test('UPDATE /courses/:id should update a course', async () => {
+  test('UPDATE /courses/:id peut mettre à jour une nouvelle course', async () => {
     const res1 = await request(app).get('/courses/1');
     expect(res1.statusCode).toBe(200);
     expect(res1.body).toHaveProperty('course');
     expect(res1.body.course.id).toBe(1);
 
     const res = await request(app).put('/courses/1').send({
-      title: 'Updated Course',
+      title: 'Updated Cours',
       teacher: 'Louis',
     });
     expect(res.statusCode).toBe(200);
     expect(res.body.teacher).toBe('Louis');
-    expect(res.body.title).toBe('Updated Course');
+    expect(res.body.title).toBe('Updated Cours');
   });
 
-  test('DELETE /courses/:id should delete a course even if students are enrolled', async () => {
+  test(`DELETE /courses/:id peut supprimer un cours même s'il ya des étudiants`, async () => {
     const courses = await request(app).get('/courses');
     const courseId = courses.body.courses[0].id;
     await request(app).post(`/courses/${courseId}/students/1`);
@@ -116,7 +116,7 @@ describe('Student-Course API integration', () => {
     expect(res.statusCode).toBe(400);
   });
 
-  test('DELETE /courses/:id should return 404 if course not found', async () => {
+  test('DELETE /courses/:id ne peut pas supprimer un cours inexistant', async () => {
     const res = await request(app).delete('/courses/999');
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe('Course not found');
