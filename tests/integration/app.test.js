@@ -61,7 +61,6 @@ describe('Student-Course API integration', () => {
     expect(res.body.error).toBe('Student not found');
   });
 
-
   //tests courses
   test('GET /courses/:id should return course and its students', async () => {
     const res = await request(app).get('/courses/1');
