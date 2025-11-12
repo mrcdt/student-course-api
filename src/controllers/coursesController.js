@@ -2,9 +2,27 @@ const storage = require('../services/storage');
 
 /**
  * @swagger
+ * tags:
+ *   name: Courses
+ *   description: Gestion des cours
+ */
+
+/**
+ * @swagger
  * /courses:
  *   get:
  *     summary: Liste des cours
+ *     description : Fait la liste de tous les cours avec le titre et le prof sur plusieurs page avec la possibilite de filtrer en fonction du **titre** ou du **prof**
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: query
+ *         name: title
+ *         schema: { type: string }
+ *         description: Filtrer par titre
+ *       - in: query
+ *         name: teacher
+ *         schema: { type: string }
+ *         description: Filtrer par professeur
  *     responses:
  *       200:
  *         description: OK
@@ -27,6 +45,8 @@ exports.listCourses = (req, res) => {
  * /courses/{id}:
  *   get:
  *     summary: Récupérer un cours
+ *     description : récupère un seul cours en fonction de son id ainsi que les étudiants inscrits à ce cours
+ *     tags: [Courses]
  *     parameters:
  *       - name: id
  *         in: path
@@ -57,6 +77,7 @@ exports.getCourse = (req, res) => {
  * /courses:
  *   post:
  *     summary: Créer un cours
+ *     tags: [Courses]
  *     requestBody:
  *       required: true
  *       content:
@@ -94,7 +115,9 @@ exports.createCourse = (req, res) => {
  * @swagger
  * /courses/{id}:
  *   delete:
+ *     description: Supprimer un cours
  *     summary: Supprimer un cours
+ *     tags: [Courses]
  *     parameters:
  *       - name: id
  *         in: path
@@ -120,6 +143,38 @@ exports.deleteCourse = (req, res) => {
   return res.status(204).send();
 };
 
+/**
+ * @swagger
+ * /courses/{id}:
+ *   put:
+ *     summary: Mettre à jour un cours
+ *     description : mise à jour d'un cours en fonction de son id et en récupérantles nouvelles données (titre et professeur) dans le body
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer }
+ *         description: ID du cours
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               teacher:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Cours mis à jour
+ *       400:
+ *         description: Données invalides
+ *       404:
+ *         description: Cours non trouvé
+ */
 exports.updateCourse = (req, res) => {
   const course = storage.get('courses', req.params.id);
   if (!course)

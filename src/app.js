@@ -4,7 +4,7 @@ const swaggerUi = require('swagger-ui-express');
 const x = require('./routes/students');
 const y = require('./routes/courses');
 
-const z = require('../swagger.json');
+//const z = require('../swagger.json');
 const app = express();
 app.use(express.json());
 
@@ -13,13 +13,13 @@ const swaggerDefinition = require('../swaggerDef');
 
 const options = {
   swaggerDefinition,
-  apis: ['./src/controllers/*.js'], // Chemin vers les fichiers avec les commentaires JSDoc
+  apis: ['./src/controllers/*.js', './src/routes/*.js'], // Chemin vers les fichiers avec les commentaires JSDoc
 };
 
 const swaggerSpec = swaggerJSDoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(z));
+//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(z));
 
-//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const storage = require('./services/storage');
 
