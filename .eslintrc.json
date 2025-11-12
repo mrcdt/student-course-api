@@ -1,0 +1,19 @@
+{
+  "env": {
+    "node": true,
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "rules": {
+    "no-var": "error",
+    "prefer-const": "warn",
+    "no-unused-vars": "warn",
+    "eqeqeq": "error",
+    "no-empty-function": "warn",
+    "consistent-return": "warn",
+    "camelcase": "warn",
+    "no-unreachable": "error"
+  }
+}

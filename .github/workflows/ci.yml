@@ -20,3 +20,10 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: npm install
+
+      - name: run lint
+        run: npm run lint
+      - name: run format
+        run: npm run format
+      - name: run test
+        run: npm test -- --coverage
