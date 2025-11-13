@@ -7,7 +7,17 @@ Projet pédagogique pour le module **Tests et Qualité** à l’Efrei.
 ### Prérequis
 
 - Node.js version 18 ou supérieure
-- npm ou yarn
+  
+  - Allez sur ce lien : https://nodejs.org/fr
+  - Cliquez sur obtenir node
+  - mettez vos information et téléchérger le dossier .msi
+  - Ouvrez votre terminal et écrivez :
+
+  ```
+  node -v
+  npm -v
+  ```
+- npm
 - Git
 
 **Clonner le repository** :
